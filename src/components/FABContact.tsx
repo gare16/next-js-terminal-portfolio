@@ -1,0 +1,47 @@
+"use client";
+
+import { useState } from "react";
+import { Mail, Linkedin, Github, X, Phone } from "lucide-react";
+import Link from "next/link";
+
+export function ContactFAB() {
+  const [open, setOpen] = useState(false);
+
+  const contacts = [
+    { name: "Email", icon: <Mail />, link: "mailto:tegar@example.com" },
+    {
+      name: "LinkedIn",
+      icon: <Linkedin />,
+      link: "https://linkedin.com/in/username",
+    },
+    { name: "GitHub", icon: <Github />, link: "https://github.com/username" },
+  ];
+
+  return (
+    <div className="fixed bottom-6 right-6 flex flex-col items-end gap-3 z-50">
+      {/* Dropdown items */}
+      {open &&
+        contacts.map((contact, idx) => (
+          <Link
+            key={idx}
+            href={contact.link}
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg shadow-lg hover:bg-primary/90 transition"
+          >
+            {contact.icon}
+            <span>{contact.name}</span>
+          </Link>
+        ))}
+
+      {/* FAB Button */}
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-13 h-13 rounded-full bg-primary text-white shadow-lg hover:scale-110 transition flex items-center justify-center"
+        aria-label="Contact"
+      >
+        {open ? <X /> : <Phone className="rotate-y-180" />}
+      </button>
+    </div>
+  );
+}
