@@ -3,18 +3,20 @@
 import { useState } from "react";
 import { Mail, Linkedin, Github, X, Phone } from "lucide-react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 export function ContactFAB() {
   const [open, setOpen] = useState(false);
+  const soc = useTranslations("terminal.social");
 
   const contacts = [
-    { name: "Email", icon: <Mail />, link: "mailto:tegar@example.com" },
+    { name: "Email", icon: <Mail />, link: "mailto:me@garee.pro" },
     {
       name: "LinkedIn",
       icon: <Linkedin />,
-      link: "https://linkedin.com/in/username",
+      link: soc("links.linkedIn"),
     },
-    { name: "GitHub", icon: <Github />, link: "https://github.com/username" },
+    { name: "GitHub", icon: <Github />, link: soc("links.github") },
   ];
 
   return (
