@@ -1,12 +1,13 @@
+import createMiddleware from "next-intl/middleware";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { defaultLocale, locales } from "@/i18n/config";
 
 const PUBLIC_FILE = /\.(.*)$/;
 
-export function middleware(req: NextRequest) {
+export default function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // Skip public files, api routes
   if (
     pathname.startsWith("/_next") ||
     pathname.startsWith("/api") ||
@@ -15,11 +16,23 @@ export function middleware(req: NextRequest) {
     return;
   }
 
-  const pathnameIsMissingLocale =
-    pathname === "/" || !/^\/(en|id)(\/|$)/.test(pathname);
+  const localeFromCookie = req.cookies.get("locale")?.value;
+  const intlMiddleware = createMiddleware({
+    locales,
+    defaultLocale,
+    localeDetection: false,
+  });
 
-  if (pathnameIsMissingLocale) {
-    const locale = "en"; // default locale
-    return NextResponse.redirect(new URL(`/${locale}${pathname}`, req.url));
+  // Only redirect root `/` to default locale
+  if (pathname === "/") {
+    const locale = localeFromCookie || defaultLocale;
+    return NextResponse.redirect(new URL(`/${locale}`, req.url));
   }
+
+  // For other paths, just let next-intl handle
+  return intlMiddleware(req);
 }
+
+export const config = {
+  matcher: ["/((?!api|_next|.*\\..*).*)"],
+};

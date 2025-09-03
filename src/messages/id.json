@@ -1,0 +1,52 @@
+{
+  "hero": {
+    "greeting": "Hai, saya",
+    "name": "Tegar",
+    "roles": "Pengembang Frontend, Pemecah Masalah, Penggemar Teknologi, Pembelajar Seumur Hidup",
+    "subheading": "Membangun pengalaman web yang mulus dengan",
+    "react": "React",
+    "nextjs": "Next.js"
+  },
+  "terminal": {
+    "intro": "",
+    "help": "Perintah yang Tersedia:,[Profil],about       - Tentang saya,skills      - Kemampuan teknis saya,experience  - Pengalaman kerja,education   - Latar belakang pendidikan,resume      - Lihat resume saya,projects    - Apa yang telah saya kerjakan,,[Kontak],contact     - Informasi kontak,social      - Tautan media sosial,,[Hiburan],joke        - Lelucon pemrograman,quote       - Kutipan inspiratif,,[Utilitas],clear       - Bersihkan terminal,date        - Tanggal dan waktu saat ini,echo [teks] - Echo teks kembali,calc [ekspr]- Kalkulator sederhana,theme [nama]- Ubah tema (light | dark | neon),uptime      - Tampilkan waktu aktif terminal",
+
+    "about": "Tentang Saya,\nSaya Garee, seorang full-stack developer yang bersemangat dengan keahlian dalam teknologi web modern.\nSaya suka membuat solusi yang efisien, skalabel, dan belajar teknologi baru.\nDengan pengalaman lebih dari 3 tahun, saya telah mengerjakan berbagai proyek dari website kecil,hingga aplikasi web yang kompleks.",
+
+    "skills": "Frontend: React, Next.js, TypeScript, JavaScript, HTML5, CSS3, Tailwind CSS.\n\nBackend: Node.js, Express, REST APIs.\n\nDatabase: MongoDB, PostgreSQL, MySQL, Firebase.\n\nTools: Git, Docker, AWS, Vercel, Figma, n8n.\n\nLanguages: JavaScript, TypeScript, SQL, Dart",
+
+    "projects": "Proyek,🎯  Project Portfolio - Website portfolio pribadi dibangun dengan Next.js dan Tailwind CSS,🚀  E-commerce Platform - Solusi e-commerce full-stack dengan React dan Node.js,🤖  AI Chatbot - Chatbot cerdas menggunakan Python dan machine learning,📊  Analytics Dashboard - Dashboard visualisasi data real-time,📱  Task Management App - Aplikasi produktivitas dengan fungsi drag-and-drop,🌐  API Integration Service - Middleware untuk integrasi multiple API",
+
+    "experience": "PENGALAMAN:\nFull Stack Web Developer Internship @ Satu Data Indonesia Bappenas (Okt-Des 2023)\n• Membangun UI responsive dengan Next.js dan Tailwind CSS, meningkatkan skor Lighthouse mobile dari 65 ke 92 dan mengurangi waktu load halaman ke <1.5s\n• Mengembangkan RESTful APIs yang aman dengan Express.js, menangani 1.000+ requests/hari dengan rata-rata response time < 200ms\n• Mengimplementasikan JWT auth dan role-based access, mengamankan 100% protected routes dan mencegah akses tidak authorized",
+
+    "education": "PENDIDIKAN:\nSarjana Teknik Komputer - Universitas Komputer Indonesia (2019-2025)\n- Spesialisasi Software Engineering\n- IPK: 2.77/4.0\n- Mata kuliah relevan: Algoritma, Struktur Data, Pengembangan Website,\n  Sistem Basis Data\n\nSertifikasi:\n- BNSP Junior Web Developer",
+
+    "contact": "Kontak\nEmail: me@garee.pro\nTelepon: +62 878 4872 3491\nLokasi: Bandung, Jawa Barat\n\nTersedia untuk:\n- Proyek freelance\n- Konsultasi teknis\n- Kolaborasi open source",
+
+    "social": {
+      "links": {
+        "github": "https://github.com/gare16",
+        "linkedIn": "https://linkedin.com/in/mochamad-tegar"
+      }
+    },
+
+    "resume": {
+      "full": "Resume\nGaree - Full Stack Developer\n─────────────────────────────\nPENGALAMAN:\nFull Stack Web Developer Internship @ Satu Data Indonesia Bappenas(Okt-Des 2023)\n• Membangun UI responsive dengan Next.js dan Tailwind CSS, meningkatkan skor Lighthouse mobile dari 65 ke 92 dan mengurangi waktu load halaman ke <1.5s\n• Mengembangkan RESTful APIs yang aman dengan Express.js, menangani 1.000+ requests/hari dengan rata-rata response time < 200ms\n• Mengimplementasikan JWT auth dan role-based access, mengamankan 100% protected routes dan mencegah akses tidak authorized\n\nKEAHLIAN:\n• Frontend: React, Next.js, TypeScript.\n• Backend: Node.js, Express.\n• Database: MongoDB, PostgreSQL, MySQL.\n• DevOps: Docker, AWS.\n\nPENDIDIKAN:\nSarjana Teknik Komputer - Universitas Komputer Indonesia\nDownload resume lengkap: ",
+      "download": "http://localhost:3000/api/download"
+    },
+    "quote": "Kutipan Inspiratif:\n\"Satu-satunya cara untuk belajar bahasa pemrograman baru adalah dengan menulis program di dalamnya.\" - Dennis Ritchie.\n\"Pertama, selesaikan masalahnya. Kemudian, tulis kodenya.\" - John Johnson.\n\"Kode itu seperti humor. Ketika kamu harus menjelaskannya, itu buruk.\" - Cory House.",
+
+    "joke": "Lelucon Pemrograman:\n\nMenapa programmer lebih suka mode gelap? Karena lampu menarik serangga!\n\nBerapa banyak programmer yang diperlukan untuk mengganti bohlam? Tidak ada. Itu masalah hardware.\n\nMengapa developer Java memakai kacamata? Karena mereka tidak bisa C#!\n\nApa cara object-oriented untuk menjadi kaya? Warisan!\n\nQuery SQL masuk ke bar, mendatangi dua tabel dan bertanya: \"Boleh saya bergabung?\""
+  },
+  "navigation": {
+    "home": "Beranda",
+    "about": "Tentang",
+    "projects": "Proyek",
+    "contact": "Kontak"
+  },
+  "common": {
+    "loading": "Memuat...",
+    "error": "Terjadi kesalahan",
+    "retry": "Coba lagi"
+  }
+}

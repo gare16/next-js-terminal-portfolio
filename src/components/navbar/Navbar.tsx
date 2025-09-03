@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { AnimatedThemeToggler } from "../magicui/animated-theme-toggler";
+import { setCookie } from "@/lib/SetCookies";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -12,12 +13,6 @@ export default function Navbar() {
 
   // Deteksi locale aktif
   const currentLocale = pathname.startsWith("/id") ? "id" : "en";
-
-  const navItems = [
-    { href: "#about", label: { en: "About", id: "Tentang" } },
-    { href: "#work", label: { en: "Work", id: "Karya" } },
-    { href: "#contact", label: { en: "Contact", id: "Kontak" } },
-  ];
 
   return (
     <nav className="fixed top-0 w-full bg-background/10 backdrop-blur-lg border-b-[0.1px] border-primary z-50">
@@ -29,16 +24,6 @@ export default function Navbar() {
 
         {/* Desktop Nav */}
         <div className="hidden md:flex gap-6 items-center">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={`/${currentLocale}${item.href}`}
-              className="text-sm font-medium hover:text-primary"
-            >
-              {item.label[currentLocale]}
-            </Link>
-          ))}
-
           {/* Language Switcher */}
           <div className="flex gap-2">
             <Link
@@ -48,6 +33,7 @@ export default function Navbar() {
                   ? "bg-primary text-white"
                   : "hover:bg-accent"
               }`}
+              onClick={async () => await setCookie("locale", "en")}
             >
               EN
             </Link>
@@ -58,6 +44,7 @@ export default function Navbar() {
                   ? "bg-primary text-white"
                   : "hover:bg-accent"
               }`}
+              onClick={async () => await setCookie("locale", "id")}
             >
               ID
             </Link>
@@ -79,17 +66,6 @@ export default function Navbar() {
       {/* Mobile Menu */}
       {open && (
         <div className="md:hidden bg-background border-t p-4 flex flex-col gap-4">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={`/${currentLocale}${item.href}`}
-              className="text-sm font-medium hover:text-primary"
-              onClick={() => setOpen(false)}
-            >
-              {item.label[currentLocale]}
-            </Link>
-          ))}
-
           {/* Language Switcher */}
           <div className="flex gap-2">
             <Link
@@ -99,7 +75,10 @@ export default function Navbar() {
                   ? "bg-primary text-white"
                   : "hover:bg-accent"
               }`}
-              onClick={() => setOpen(false)}
+              onClick={async () => {
+                await setCookie("locale", "en");
+                setOpen(false);
+              }}
             >
               EN
             </Link>
@@ -110,7 +89,10 @@ export default function Navbar() {
                   ? "bg-primary text-white"
                   : "hover:bg-accent"
               }`}
-              onClick={() => setOpen(false)}
+              onClick={async () => {
+                await setCookie("locale", "id");
+                setOpen(false);
+              }}
             >
               ID
             </Link>

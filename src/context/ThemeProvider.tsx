@@ -17,21 +17,51 @@ const ThemeContext = createContext<{
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [theme, setThemeState] = useState<ThemeMode>("light");
+  const [isMounted, setIsMounted] = useState(false);
 
-  // Apply class to <html> when theme changes
+  // Set initial theme from localStorage after component mounts
   useEffect(() => {
+    setIsMounted(true);
+    const savedTheme = localStorage.getItem("theme") as ThemeMode | null;
+    if (savedTheme && ["light", "dark", "neon"].includes(savedTheme)) {
+      setThemeState(savedTheme);
+    } else {
+      // Optional: set default based on system preference if no saved theme
+      const systemPrefersDark = window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches;
+      const defaultTheme = systemPrefersDark ? "dark" : "light";
+      setThemeState(defaultTheme);
+      localStorage.setItem("theme", defaultTheme);
+    }
+  }, []);
+
+  // Update document class and localStorage when theme changes
+  useEffect(() => {
+    if (!isMounted) return;
+
     const root = document.documentElement;
-    root.classList.remove("light", "dark", "neon"); // clear old classes
+    root.classList.remove("light", "dark", "neon");
     root.classList.add(theme);
-  }, [theme]);
+
+    localStorage.setItem("theme", theme);
+  }, [theme, isMounted]);
 
   const toggle = () => {
-    setThemeState((prev) => (prev === "dark" ? "light" : "dark"));
+    setThemeState((prev) => {
+      const newTheme = prev === "dark" ? "light" : "dark";
+      return newTheme;
+    });
   };
 
   const setTheme = (mode: ThemeMode) => {
     setThemeState(mode);
   };
+
+  // Prevent rendering until we've read from localStorage
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <ThemeContext.Provider value={{ theme, toggle, setTheme }}>

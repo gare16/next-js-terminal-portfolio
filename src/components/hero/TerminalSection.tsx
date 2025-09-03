@@ -4,32 +4,52 @@ import { useEffect, useRef, useState } from "react";
 import { Terminal } from "@xterm/xterm";
 import "@xterm/xterm/css/xterm.css";
 import { useTheme } from "@/context/ThemeProvider";
-import { COMMANDS, INTRO_TEXT, PROMPT, TERMINAL_CONFIG } from "@/lib/constants";
-import { createCommands } from "@/lib/ChangeTheme";
+import { GetIntroText, PROMPT, TERMINAL_CONFIG } from "@/lib/constants";
+import { createCommandsTheme } from "@/lib/ChangeTheme";
+import { useCommands } from "@/lib/Commands";
+import { createCommandsGoTo } from "@/lib/CommandGoTo";
 
 export default function TerminalSection() {
   const terminalContainerRef = useRef<HTMLDivElement>(null);
   const termRef = useRef<Terminal | null>(null);
   const { theme, setTheme } = useTheme();
   const [isIntroComplete, setIsIntroComplete] = useState(false);
-  const THEMES = createCommands(setTheme);
+  const THEMES = createCommandsTheme(setTheme);
+
+  const INTRO_TEXT = GetIntroText();
+  const COMMANDS = useCommands();
+
+  const PATHNAME = createCommandsGoTo();
 
   useEffect(() => {
     if (!termRef.current) return;
-    termRef.current.options.theme =
-      theme === "dark" || theme !== "light"
-        ? {
-            background: "#09090b",
-            foreground: "#ffffff",
-            cursor: "#ff2056",
-            selectionBackground: "#ffccd9",
-          }
-        : {
-            background: "#ffffff",
-            foreground: "#09090b",
-            cursor: "#ff2056",
-            selectionBackground: "#ffccd9",
-          };
+
+    switch (theme) {
+      case "dark":
+        termRef.current.options.theme = {
+          background: "#09090b",
+          foreground: "#ffffff",
+          cursor: "#ff2056",
+          selectionBackground: "#ffccd9",
+        };
+        break;
+      case "light":
+        termRef.current.options.theme = {
+          background: "#ffffff",
+          foreground: "#09090b",
+          cursor: "#ff2056",
+          selectionBackground: "#ffccd9",
+        };
+        break;
+      case "neon":
+        termRef.current.options.theme = {
+          background: "#000000",
+          foreground: "#39ff14", // neon green text
+          cursor: "#ff00ff", // neon magenta cursor
+          selectionBackground: "#00ffff30",
+        };
+        break;
+    }
   }, [theme]);
 
   useEffect(() => {
@@ -47,6 +67,7 @@ export default function TerminalSection() {
               cursor: "#ff2056",
               cursorAccent: "#ff2056",
               selectionBackground: "#ffccd9",
+              red: "#ff2056",
             }
           : {
               background: "#ffffff",
@@ -54,6 +75,7 @@ export default function TerminalSection() {
               cursor: "#ff2056",
               cursorAccent: "#ff2056",
               selectionBackground: "#ffccd9",
+              red: "#ff2056",
             },
     });
     term.options.linkHandler = {
@@ -95,7 +117,7 @@ export default function TerminalSection() {
     const typeIntro = () => {
       let i = 0,
         j = 0;
-      const typeNext = () => {
+      const typeNext = async () => {
         if (i < INTRO_TEXT.length) {
           if (j < INTRO_TEXT[i].length) {
             term.write(INTRO_TEXT[i][j]);
@@ -190,6 +212,7 @@ export default function TerminalSection() {
       const [command, ...args] = cmdLine.split(" ");
       const value = COMMANDS[command as keyof typeof COMMANDS];
       const themes = THEMES[command as keyof typeof THEMES];
+      const path = PATHNAME[command as keyof typeof PATHNAME];
       const argument = args.join(" ");
       let output: string | undefined;
 
@@ -208,6 +231,8 @@ export default function TerminalSection() {
         output = typeof themes === "function" ? await themes(args) : themes;
       } else if (value) {
         output = typeof value === "function" ? value(argument) : value;
+      } else if (path) {
+        output = typeof path === "function" ? await path(args) : path;
       } else {
         output = `command not found: \x1b[31m${command}\x1b[0m`;
       }

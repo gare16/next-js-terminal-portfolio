@@ -6,13 +6,12 @@ export const changeTheme = async (toggleTheme: () => void) => {
     return;
   }
 
-  // Use center of the viewport for animation origin
   const x = window.innerWidth / 2;
   const y = window.innerHeight / 2;
 
   await document.startViewTransition(() => {
     flushSync(() => {
-      toggleTheme(); // your custom toggle
+      toggleTheme();
     });
   }).ready;
 
@@ -37,9 +36,9 @@ export const changeTheme = async (toggleTheme: () => void) => {
   );
 };
 
-type CommandHandler = (args: string[]) => Promise<string>;
+export type CommandHandler = (args: string[]) => Promise<string>;
 
-export const createCommands = (
+export const createCommandsTheme = (
   setTheme: (mode: "light" | "dark" | "neon") => void
 ): Record<string, CommandHandler> => ({
   theme: async (args: string[]) => {
