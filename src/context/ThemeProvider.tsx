@@ -40,11 +40,19 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (!isMounted) return;
 
+    // Dispatch theme change start event
+    document.dispatchEvent(new CustomEvent('themeChangeStart'));
+
     const root = document.documentElement;
     root.classList.remove("light", "dark", "neon");
     root.classList.add(theme);
 
     localStorage.setItem("theme", theme);
+
+    // Dispatch theme change end event after a short delay to allow for CSS transitions
+    setTimeout(() => {
+      document.dispatchEvent(new CustomEvent('themeChangeEnd'));
+    }, 300); // 300ms matches the CSS transition duration
   }, [theme, isMounted]);
 
   const toggle = () => {
@@ -68,7 +76,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       <GridBeams
         gridSize={0}
         gridColor="rgba(255, 255, 255, 0.2)"
-        rayCount={20}
+        rayCount={1} // Reduced from 20 to 5 to improve performance
         rayOpacity={1}
         raySpeed={1}
         rayLength="50vh"

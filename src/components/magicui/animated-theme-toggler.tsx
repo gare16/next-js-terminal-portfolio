@@ -23,6 +23,9 @@ export const AnimatedThemeToggler = ({ className }: Props) => {
   const changeTheme = async (newTheme: "dark" | "light" | "neon") => {
     if (!buttonRef.current) return;
 
+    // Dispatch theme change start event
+    document.dispatchEvent(new CustomEvent('themeChangeStart'));
+
     await document.startViewTransition(() => {
       flushSync(() => {
         setTheme(newTheme); // ganti theme sesuai pilihan dropdown
@@ -51,6 +54,11 @@ export const AnimatedThemeToggler = ({ className }: Props) => {
         pseudoElement: "::view-transition-new(root)",
       }
     );
+
+    // Dispatch theme change end event after the transition completes
+    setTimeout(() => {
+      document.dispatchEvent(new CustomEvent('themeChangeEnd'));
+    }, 700);
   };
 
   return (

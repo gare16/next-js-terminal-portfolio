@@ -2,9 +2,18 @@ import { flushSync } from "react-dom";
 
 export const changeTheme = async (toggleTheme: () => void) => {
   if (!document.startViewTransition) {
+    // Dispatch theme change start event
+    document.dispatchEvent(new CustomEvent('themeChangeStart'));
     toggleTheme();
+    // Dispatch theme change end event after a short delay
+    setTimeout(() => {
+      document.dispatchEvent(new CustomEvent('themeChangeEnd'));
+    }, 300);
     return;
   }
+
+  // Dispatch theme change start event
+  document.dispatchEvent(new CustomEvent('themeChangeStart'));
 
   const x = window.innerWidth / 2;
   const y = window.innerHeight / 2;
@@ -34,6 +43,11 @@ export const changeTheme = async (toggleTheme: () => void) => {
       pseudoElement: "::view-transition-new(root)",
     }
   );
+
+  // Dispatch theme change end event after the transition completes
+  setTimeout(() => {
+    document.dispatchEvent(new CustomEvent('themeChangeEnd'));
+  }, 700);
 };
 
 export type CommandHandler = (args: string[]) => Promise<string>;
@@ -59,7 +73,7 @@ export const createCommandsTheme = (
       return `Theme set to light mode`;
     }
 
-    return `Invalid theme. 
+    return `Invalid theme.
 Available: light, dark, neon`;
   },
 });

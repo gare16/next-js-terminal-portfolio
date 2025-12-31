@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import React, { HTMLAttributes, memo, useMemo } from "react";
+import React, { HTMLAttributes, memo, useMemo, useRef, useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 
 const createGridMask = (start: number, end: number): string => {
@@ -84,6 +84,7 @@ const LightRay = memo<LightRayProps>(
           filter: `blur(${blurAmount}px)`,
           background: `linear-gradient(to bottom, rgba(200,220,255,${opacity}), rgba(200,220,255,0))`,
           transform: `translateX(-50%) rotate(${rotation}deg)`,
+          willChange: 'transform, opacity',
         }}
         animate={{
           opacity: [0.3, 0.7, 0.3],
@@ -121,7 +122,7 @@ export const GridBeams: React.FC<GridBeamsProps> = ({
   className,
   gridSize = 40,
   gridColor = "rgba(200, 220, 255, 0.2)",
-  rayCount = 15,
+  rayCount = 5, // Reduced from 15 to improve performance
   rayOpacity = 0.35,
   raySpeed = 1,
   rayLength = "45vh",
@@ -130,19 +131,54 @@ export const GridBeams: React.FC<GridBeamsProps> = ({
   backgroundColor = "#020412",
   ...props
 }) => {
+  // Memoize ray configs to prevent unnecessary recalculations
   const rayConfigs = useMemo(() => {
     return Array.from({ length: rayCount }, (_, i) =>
       generateRayConfig(i, rayCount)
     );
   }, [rayCount]);
 
+  // Memoize grid mask to prevent recalculation
   const gridMask = useMemo(
     () => createGridMask(gridFadeStart, gridFadeEnd),
     [gridFadeStart, gridFadeEnd]
   );
 
+  const gridBeamsRef = useRef<HTMLDivElement>(null);
+
+  // Optimize by reducing ray count during theme transitions
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [currentRayConfigs, setCurrentRayConfigs] = useState(rayConfigs);
+
+  useEffect(() => {
+    const handleThemeChangeStart = () => setIsTransitioning(true);
+    const handleThemeChangeEnd = () => setIsTransitioning(false);
+
+    // Listen for theme change events
+    document.addEventListener('themeChangeStart', handleThemeChangeStart);
+    document.addEventListener('themeChangeEnd', handleThemeChangeEnd);
+
+    return () => {
+      document.removeEventListener('themeChangeStart', handleThemeChangeStart);
+      document.removeEventListener('themeChangeEnd', handleThemeChangeEnd);
+    };
+  }, []);
+
+  // Update ray configs when transitioning
+  useEffect(() => {
+    if (isTransitioning) {
+      // Show only a few rays during transitions for better performance
+      const reducedRayConfigs = rayConfigs.slice(0, Math.max(1, Math.floor(rayConfigs.length / 3)));
+      setCurrentRayConfigs(reducedRayConfigs);
+    } else {
+      // Show all rays after transition
+      setCurrentRayConfigs(rayConfigs);
+    }
+  }, [isTransitioning, rayConfigs]);
+
   return (
     <div
+      ref={gridBeamsRef}
       className={cn(
         "relative overflow-hidden bg-[var(--bg-color)] bg-[radial-gradient(ellipse_at_50%_-20%,#1a2c5a,transparent_70%)]",
         className
@@ -165,7 +201,7 @@ export const GridBeams: React.FC<GridBeamsProps> = ({
         }
       />
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {rayConfigs.map((config, index) => (
+        {currentRayConfigs.map((config, index) => (
           <LightRay
             key={index}
             left={config.left}

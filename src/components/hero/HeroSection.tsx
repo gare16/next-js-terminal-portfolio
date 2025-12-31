@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { HeaderSection } from "./HeaderSection";
-import TerminalSection from "./TerminalSection";
+import TerminalSectionWrapper from "./TerminalSectionWrapper";
 
 export function HeroSection() {
   const t = useTranslations("hero");
@@ -16,8 +16,8 @@ export function HeroSection() {
       {/* Header + Animated tagline */}
       <HeaderSection greeting={t("greeting")} name={t("name")} roles={roles} />
 
-      {/* Terminal Section */}
-      <TerminalSection />
+      {/* Terminal Section - Lazy Loaded */}
+      <TerminalSectionWrapper />
 
       {/* Subheading */}
       <p className="text-xs md:text-sm lg:text-md text-muted-foreground max-w-2xl">

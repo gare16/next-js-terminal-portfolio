@@ -3,7 +3,8 @@ import { createReadStream } from "fs";
 import { stat } from "fs/promises";
 import { join } from "path";
 
-export async function GET(req: NextRequest) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function GET(_req: NextRequest) {
   const filePath = join(
     process.cwd(),
     "public",
@@ -24,6 +25,7 @@ export async function GET(req: NextRequest) {
       },
     });
   } catch (error) {
+    console.log(error)
     return new Response(JSON.stringify({ error: "File not found" }), {
       status: 404,
       headers: {

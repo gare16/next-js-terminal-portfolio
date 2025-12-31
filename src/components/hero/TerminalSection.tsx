@@ -265,12 +265,19 @@ export default function TerminalSection() {
   }, []);
 
   return (
-    <div className="w-full rounded-xl flex max-w-2xl min-h-64 border border-gray-700 flex-col shadow-lg shadow-primary overflow-hidden relative font-mono text-sm bg-background">
+    <div
+      className="w-full rounded-xl flex max-w-2xl min-h-64 border border-gray-700 flex-col shadow-lg shadow-primary overflow-hidden relative font-mono text-sm bg-background"
+      role="region"
+      aria-label="Interactive Terminal"
+    >
       {/* Terminal header */}
-      <div className="bg-background left-0 w-full h-8 flex items-center px-3 gap-2 border-b border-gray-700 z-20">
-        <span className="w-3 h-3 rounded-full bg-red-500"></span>
-        <span className="w-3 h-3 rounded-full bg-yellow-500"></span>
-        <span className="w-3 h-3 rounded-full bg-green-500"></span>
+      <div
+        className="bg-background left-0 w-full h-8 flex items-center px-3 gap-2 border-b border-gray-700 z-20"
+        aria-hidden="true"
+      >
+        <span className="w-3 h-3 rounded-full bg-red-500" aria-label="Close button"></span>
+        <span className="w-3 h-3 rounded-full bg-yellow-500" aria-label="Minimize button"></span>
+        <span className="w-3 h-3 rounded-full bg-green-500" aria-label="Maximize button"></span>
         <span className="ml-3 text-gray-400 text-xs tracking-wide">
           garee.pro
         </span>
@@ -290,12 +297,16 @@ export default function TerminalSection() {
             termRef.current.focus();
           }
         }}
+        role="log"
+        aria-live="polite"
+        aria-label="Terminal output"
       />
 
       {/* Overlay untuk mencegah interaksi selama intro */}
       {!isIntroComplete && (
         <div
           className="absolute inset-0 bg-transparent z-10"
+          aria-hidden="true"
           onMouseDown={(e) => e.preventDefault()}
           onClick={(e) => e.preventDefault()}
         />
